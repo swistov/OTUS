@@ -4,16 +4,18 @@ import collections
 
 from nltk import pos_tag
 
+local_path = ''
+
 
 def flat(_list):
     """ [(1,2), (3,4)] -> [1, 2, 3, 4]"""
     return sum([list(item) for item in _list], [])
 
 
-def is_verb(word):
-    if not word:
+def is_verb(verb_word):
+    if not verb_word:
         return False
-    pos_info = pos_tag([word])
+    pos_info = pos_tag([verb_word])
     return pos_info[0][1] == 'VB'
 
 
@@ -29,7 +31,7 @@ def get_file_names(path_with_file):
 
 
 def get_trees(_path):
-    path_with_file = ''
+    path_with_file = _path
     file_names = get_file_names(path_with_file)
     trees = []
 
@@ -53,59 +55,43 @@ def get_all_names(tree):
 
 
 def get_verbs_from_function_name(function_name):
-    return [word for word in function_name.split('_') if is_verb(word)]
+    return [verb_word for verb_word in function_name.split('_') if is_verb(verb_word)]
 
 
-def get_all_words_in_path(path):
-    trees = [t for t in get_trees(path) if t]
-
+def get_all_words_in_path(file_path):
+    trees = [t for t in get_trees(file_path) if t]
+    function_names = []
     for f in flat([get_all_names(t) for t in trees]):
         if not (f.startswith('__') and f.endswith('__')):
-            names_func = f
+            function_names = function_names.append(f)
 
     def split_name_to_words(name):
         return [n for n in name.split('_') if n]
-    return flat([split_name_to_words(func_name) for func_name in names_func])
+    return flat([split_name_to_words(function_name) for function_name in function_names])
 
 
-def get_nodes(tree):
-    nodes = []
-    for node in ast.walk(tree):
-        if isinstance(node, ast.FunctionDef):
-            nodes = nodes.append(node)
-    return nodes.name.lower()
-
-
-def get_lower_tree(tree):
-    lower_tree = []
-    flat_list = []
-
-    for t in tree:
-        flat_list = flat_list.append(get_nodes(t))
-
-    for f in flat(flat_list):
+def get_ast_nodes(tree):
+    ast_nodes = []
+    for f in flat([[node.name.lower() for node in ast.walk(t) if isinstance(node, ast.FunctionDef)] for t in tree]):
         if not (f.startswith('__') and f.endswith('__')):
-            lower_tree = lower_tree.append(f)
+            ast_nodes = ast_nodes.append(f)
+    return ast_nodes
 
-    return lower_tree
 
-
-def get_top_verbs_in_path(path, top_size=10):
-    # global Path
-    # Path = path
-    trees = [t for t in get_trees(None) if t]
+def get_top_verbs_in_path(file_path, top_path_size=10):
+    global local_path
+    local_path = file_path
+    trees = [t for t in get_trees(local_path) if t]
+    fncs = get_ast_nodes(trees)
     print('functions extracted')
-    x = []
-    for function_name in get_lower_tree(trees):
-        x = x.append(get_verbs_from_function_name(function_name))
-    verbs = flat(x)
-
-    return collections.Counter(verbs).most_common(top_size)
+    verbs = flat([get_verbs_from_function_name(function_name) for function_name in fncs])
+    return collections.Counter(verbs).most_common(top_path_size)
 
 
-def get_top_functions_names_in_path(path, top_size=10):
-    t = get_trees(path)
-    return collections.Counter(get_lower_tree(t)).most_common(top_size)
+def get_top_functions_names_in_path(file_path, top_path_size=10):
+    t = get_trees(file_path)
+    nms = get_ast_nodes(t)
+    return collections.Counter(nms).most_common(top_path_size)
 
 
 wds = []
