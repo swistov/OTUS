@@ -4,8 +4,6 @@ import collections
 
 from nltk import pos_tag
 
-local_path = ''
-
 
 def flat(_list):
     """ [(1,2), (3,4)] -> [1, 2, 3, 4]"""
@@ -22,11 +20,9 @@ def is_verb(verb_word):
 def get_file_names(path_with_file):
     file_names = []
     for dir_name, dirs, files in os.walk(path_with_file, topdown=True):
-        for file in files:
-            if file.endswith('.py'):
-                file_names.append(os.path.join(dir_name, file))
-                if len(file_names) == 100:
-                    break
+        file_names = [os.path.join(dir_name, file) for file in files if file.endswith('.py')]
+        if len(file_names) == 100:
+            break
     return file_names
 
 
@@ -35,7 +31,7 @@ def get_trees(_path):
     file_names = get_file_names(path_with_file)
     trees = []
 
-    print('total %s files' % len(file_names))
+    print(f'total {len(file_names)} files in {path_with_file}')
 
     for filename in file_names:
         with open(filename, 'r', encoding='utf-8') as attempt_handler:
@@ -79,9 +75,7 @@ def get_ast_nodes(tree):
 
 
 def get_top_verbs_in_path(file_path, top_path_size=10):
-    global local_path
-    local_path = file_path
-    trees = [t for t in get_trees(local_path) if t]
+    trees = [t for t in get_trees(file_path) if t]
     fncs = get_ast_nodes(trees)
     print('functions extracted')
     verbs = flat([get_verbs_from_function_name(function_name) for function_name in fncs])
