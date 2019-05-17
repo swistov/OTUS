@@ -6,7 +6,9 @@ from nltk import pos_tag
 
 
 def flat(_list):
-    """ [(1,2), (3,4)] -> [1, 2, 3, 4]"""
+    """
+    [(1,2), (3,4)] -> [1, 2, 3, 4]
+    """
     return sum([list(item) for item in _list], [])
 
 
@@ -20,9 +22,9 @@ def is_verb(verb_word):
 def get_file_names(path_with_file):
     file_names = []
     for dir_name, dirs, files in os.walk(path_with_file, topdown=True):
-        file_names = [os.path.join(dir_name, file) for file in files if file.endswith('.py')]
-        if len(file_names) == 100:
-            break
+        for file in files:
+            if file.endswith('.py'):
+                file_names.append(os.path.join(dir_name, file))
     return file_names
 
 
@@ -76,9 +78,8 @@ def get_ast_nodes(tree):
 
 def get_top_verbs_in_path(file_path, top_path_size=10):
     trees = [t for t in get_trees(file_path) if t]
-    fncs = get_ast_nodes(trees)
     print('functions extracted')
-    verbs = flat([get_verbs_from_function_name(function_name) for function_name in fncs])
+    verbs = flat([get_verbs_from_function_name(function_name) for function_name in get_ast_nodes(trees)])
     return collections.Counter(verbs).most_common(top_path_size)
 
 
