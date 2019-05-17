@@ -4,6 +4,12 @@ Homework in OTUS school
 - lesson 1
 
     `Analyze static code and refactoring`
-
 - lesson 2
+    
+    `List vs tuple`
 - lesson 3
+
+    `Object-oriented programming`
+- lesson 4
+
+    `[u]WSGI`
