@@ -10,7 +10,13 @@ def get_view(request):
 
 
 def post_view(requests):
-    if requests['QUERY_STRING']:
-        return post_enabled(requests['QUERY_STRING'])
+    """
+    :param requests: POST request from user
+    :return: if OK - return user parameters, if request not have parameters -
+                return None str
+    """
+    query_string = requests['QUERY_STRING']
+    if query_string:
+        return post_enabled('\n'.join(query_string.split('&')))
     else:
-        return b'DEAD'
+        return b'None'

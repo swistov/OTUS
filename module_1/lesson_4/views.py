@@ -7,4 +7,8 @@ def my_view():
 
 
 def post_enabled(query):
-    return str.encode(f'Your parameters \n{query}')
+    """
+    :param query: Query from request
+    :return: byte code
+    """
+    return str.encode(f'Your parameters: \n{query}')
