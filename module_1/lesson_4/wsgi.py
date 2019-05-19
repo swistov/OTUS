@@ -9,8 +9,6 @@ from urls import get_view, post_view
 
 def application(environ, start_response):
     start_response('200 OK', [('Content-Type', 'text/plain')])
-    # print(2 * '++++++++')
-    # print(environ)
     if environ['REQUEST_METHOD'] == 'GET':
         return get_view(environ)
     elif environ['REQUEST_METHOD'] == 'POST':

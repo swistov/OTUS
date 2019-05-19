@@ -19,4 +19,4 @@ def post_view(requests):
     if query_string:
         return post_enabled('\n'.join(query_string.split('&')))
     else:
-        return b'None'
+        return b'NONE'
