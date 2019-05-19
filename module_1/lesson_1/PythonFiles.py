@@ -4,6 +4,8 @@ import collections
 
 from nltk import pos_tag
 
+TOP_SIZE = 200
+
 
 def flat(_list):
     """
@@ -102,7 +104,7 @@ for project in projects:
     path = os.path.join('.', project)
     wds += get_top_verbs_in_path(path)
 
-top_size = 200
+
 print('total %s words, %s unique' % (len(wds), len(set(wds))))
-for word, occurence in collections.Counter(wds).most_common(top_size):
+for word, occurence in collections.Counter(wds).most_common(TOP_SIZE):
     print(word, occurence)
