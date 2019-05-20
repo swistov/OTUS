@@ -1,12 +1,27 @@
 from views import index, my_view, post_enabled
-import re
+
+
+class Routes:
+    """
+    Dict with all routes
+    """
+    site_routes = {
+        '/': index(),
+        '/my_view': my_view(),
+    }
 
 
 def get_view(request):
-    if request['REQUEST_URI'] == '/':
-        return index()
-    elif request['REQUEST_URI'] == '/my_view':
-        return my_view()
+    """
+    :param request: User request
+    :return: Func from Routers if not in dict - return '/'
+    """
+    routes = Routes.site_routes.get(request['REQUEST_URI'])
+
+    if routes is None:
+        return Routes.site_routes.get('/')
+
+    return routes
 
 
 def post_view(requests):

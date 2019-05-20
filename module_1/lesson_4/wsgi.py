@@ -1,11 +1,5 @@
 from urls import get_view, post_view
 
-"""Generate request"""
-
-"""Request -> view"""
-
-"""Parse URL"""
-
 
 def application(environ, start_response):
     start_response('200 OK', [('Content-Type', 'text/plain')])
