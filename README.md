@@ -13,3 +13,6 @@ Homework in OTUS school
 - lesson 4
 
     `[u]WSGI`
+- lesson 5
+
+    `Demo internet magazine on Flask`
