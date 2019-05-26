@@ -1,4 +1,3 @@
-
 laptops = [
     {'id': 1, 'name': 'Lenovo ThinkPad P51s',   'cost': 120000, 'img': 'img/laptop.jpg'},
     {'id': 2, 'name': 'Lenovo ThinkPad P52s',   'cost': 123000, 'img': 'img/laptop.jpg'},
