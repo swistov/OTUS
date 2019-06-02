@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'appmain/css/bootstrap.min.css' %}">
+
+    <title>
+      {% block title %}
+      Hello!
+      {% endblock %}
+    </title>
+  </head>
+  <body class="container">
+    {% block body %}
+    <h1>Hello!</h1>
+    {% endblock %}
+  </body>
+</html>

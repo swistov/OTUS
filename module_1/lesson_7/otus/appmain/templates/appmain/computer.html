@@ -1,0 +1,16 @@
+{% extends 'appmain/base.html' %}
+
+{% block title %}
+    Main page
+{% endblock %}
+
+{% block body %}
+    <a href="{% url 'appmain:main'%}">На главную</a>
+    {% for computer in computer_info %}
+        <h1>{{ computer.name }}</h1>
+        <hr>
+        {{ computer.manufacturer }} {{ computer.model }}
+        <br>{{ computer.body }}
+        <hr>{{ computer.price }} P
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'appmain/base.html' %}
+
+{% block title %}
+    Main page
+{% endblock %}
+
+{% block body %}
+    <h1>Hello index page!</h1>
+    <hr>
+    <br>
+    {% for types in computer_type %}
+        <a href="{% url 'appmain:types' types.id %}">{{ types }}</a>
+        <hr>
+    {% endfor %}
+{% endblock %}
