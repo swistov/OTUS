@@ -27,7 +27,6 @@ class BaseTable:
 
     @classmethod
     def __get_table_name(cls):
-        # print('_'.join((cls.__name__.lower(), 'tbl')))
         return '_'.join((cls.__name__.lower(), 'tbl'))
 
     @classmethod
@@ -50,7 +49,6 @@ class BaseTable:
         table_name = cls.__get_table_name()
 
         request = f'DROP TABLE {table_name};'
-        print(request)
 
         try:
             conn.cursor().execute(request)
