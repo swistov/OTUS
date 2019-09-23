@@ -4,13 +4,12 @@ from collections import OrderedDict
 from orm.db import Field, db_conn
 
 
-def value_formatter(value):
-    if not value:
-        return 'null'
+def value_formatter(value='null'):
     if isinstance(value, str):
         return repr(value)
     if isinstance(value, int):
         return str(value)
+    return value
 
 
 class BaseTable:
