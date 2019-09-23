@@ -35,7 +35,6 @@ class BaseTable:
         table_name = cls.__get_table_name()
 
         request = f'INSERT INTO {table_name}({fields}) VALUES({values});'
-        print(request)
 
         try:
             conn.cursor().execute(request)
@@ -80,7 +79,6 @@ class BaseTable:
         fields += foreign_keys
 
         request = f'CREATE TABLE {table_name} ({", ".join(fields)});'
-        print(request)
 
         try:
             conn.cursor().execute(request)
