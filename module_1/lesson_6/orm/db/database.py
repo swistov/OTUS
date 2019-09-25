@@ -28,6 +28,17 @@ class Field:
             self.foreign_key = foreign_key
 
 
+def sql_select_as(from_table: str, fields_list: list):
+    table_dot_only = ['.'.join(i) for i in
+                      list(zip([from_table] * len(fields_list), fields_list))]
+    fields_as = ['__'.join(i) for i in
+                 list(zip([from_table] * len(fields_list), fields_list))]
+    table_dot_only_fields_as = [' as '.join(i) for i in
+                                list(zip(table_dot_only, fields_as))]
+
+    return ', '.join(table_dot_only_fields_as)
+
+
 def db_conn():
     try:
         connection = sqlite3.dbapi2.connect(full_path)
