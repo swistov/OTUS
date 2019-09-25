@@ -1,4 +1,5 @@
 import sqlite3
+from loguru import logger
 
 from orm.db.check import full_path, db, control_foreign_keys
 
@@ -12,6 +13,7 @@ class Field:
                  foreign_key=None):
 
         if not field_type and not foreign_key:
+            logger.error('Add <field_type>. Not created.')
             return TypeError('Add <field_type>. Not created.')
 
         self.type = field_type
@@ -27,7 +29,10 @@ class Field:
 
 
 def db_conn():
-    connection = sqlite3.dbapi2.connect(full_path)
+    try:
+        connection = sqlite3.dbapi2.connect(full_path)
+    except:
+        logger.error('Problem with connect to DB')
     if control_foreign_keys:
         connection.cursor().execute('PRAGMA foreign_keys = ON;')
     return connection

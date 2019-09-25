@@ -1,15 +1,16 @@
 import sqlite3
 from collections import OrderedDict
-
+from loguru import logger
 from orm.db import Field, db_conn
 
 
-def value_formatter(value='null'):
+def value_formatter(value):
+    if not value:
+        return 'null'
     if isinstance(value, str):
         return repr(value)
     if isinstance(value, int):
         return str(value)
-    return value
 
 
 class BaseTable:
@@ -39,8 +40,9 @@ class BaseTable:
         try:
             conn.cursor().execute(request)
             conn.commit()
+            logger.debug('New record "{}"', request)
         except sqlite3.IntegrityError as e:
-            print(f'Error: Unable to create record: {str(e)}')
+            logger.error('Error: Unable to create record: {}', str(e))
 
     @classmethod
     def drop(cls, conn=db_conn()):
@@ -50,8 +52,9 @@ class BaseTable:
 
         try:
             conn.cursor().execute(request)
+            logger.debug('Drop table. Request: "{}"', request)
         except sqlite3.OperationalError as e:
-            print(f'Error: Unable to drop table {table_name}: {str(e)}')
+            logger.error('Error: Unable to drop table {}: {}', table_name, str(e))
 
     @classmethod
     def create(cls, conn=db_conn()):
@@ -82,8 +85,9 @@ class BaseTable:
 
         try:
             conn.cursor().execute(request)
+            logger.info('Add new table. Request: "{}"', request)
         except sqlite3.OperationalError as e:
-            print(f'Error: Unable to create table {table_name}: {str(e)}')
+            logger.error('Error: Unable to create table {}: {}', table_name, str(e))
 
     @classmethod
     def get(cls, **kwargs):

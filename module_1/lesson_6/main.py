@@ -1,4 +1,6 @@
-from orm.db import BaseTable, Field
+from loguru import logger
+from orm.db.database import Field
+from orm.db.tables import BaseTable
 
 
 class Curse(BaseTable):
@@ -7,7 +9,12 @@ class Curse(BaseTable):
 
 
 if __name__ == '__main__':
-
+    logger.add('db.log',
+               colorize=True,
+               format="<green>{time}</green> <level>{message}</level>",
+               rotation="5 MB",
+               compression="zip",
+               enqueue=True)
     # Init
     curse = Curse()
 
